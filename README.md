@@ -8,10 +8,6 @@ This project demonstrates Behavior-Driven Development (BDD) for an embedded C tr
 bdd/
 ├── ceedling/                # Ceedling project for our C code
 │   ├── project.yml          # Ceedling configuration
-│   ├── src/                 # Our C source code
-│   │   ├── traffic_controller.c
-│   │   ├── traffic_controller.h
-│   │   └── hal_traffic_lights.h # Hardware Abstraction Layer (to be mocked)
 │   └── test/                # Our C tests (including the BDD harness)
 │       └── test_harness.c
 ├── features/                # Behave project
@@ -19,6 +15,11 @@ bdd/
 │   ├── traffic_light.feature # Our Gherkin specification
 │   └── steps/
 │       └── traffic_steps.py   # Python step definitions
+├── lib/
+│   ├── traffic_controller.c
+│   └── traffic_controller.h
+├── hal/
+│   └── hal_traffic_lights.h
 └── Makefile                 # A simple Makefile to tie it all together
 ```
 

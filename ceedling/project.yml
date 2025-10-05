@@ -6,9 +6,10 @@
   :test:
     - +:test/**
   :source:
-    - src/**
+    - ../lib/**
   :include:
-    - src/**
+    - ../lib/**
+    - ../hal/**
 :cmock:
   :mock_prefix: mock_
   :plugins:
