@@ -41,6 +41,10 @@ PED_MAP = {
     "Flashing Don't Walk": lib.PED_SIGNAL_FLASHING_DONT_WALK,
 }
 
+# Create reverse mappings for user-friendly error messages
+REVERSE_LIGHT_MAP = {v: k for k, v in LIGHT_MAP.items()}
+REVERSE_PED_MAP = {v: k for k, v in PED_MAP.items()}
+
 # --- Step Definitions ---
 
 @given('the traffic controller is initialized')
@@ -64,21 +68,23 @@ def step_impl(context):
 def step_impl(context, color):
     expected = LIGHT_MAP[color]
     actual = lib.Harness_GetMainLight()
-    assert actual == expected, f"Main Light: Expected {color}, but got {actual}"
+    assert actual == expected, f"Main Light: Expected {color}, but got {REVERSE_LIGHT_MAP.get(actual, 'Unknown')}"
 
 @then('the side light should be {color}')
 def step_impl(context, color):
     expected = LIGHT_MAP[color]
     actual = lib.Harness_GetSideLight()
-    assert actual == expected, f"Side Light: Expected {color}, but got {actual}"
+    assert actual == expected, f"Side Light: Expected {color}, but got {REVERSE_LIGHT_MAP.get(actual, 'Unknown')}"
 
 @then('all vehicle lights should be Red')
 def step_impl(context):
-    assert lib.Harness_GetMainLight() == lib.LIGHT_STATE_RED
-    assert lib.Harness_GetSideLight() == lib.LIGHT_STATE_RED
+    main_light = lib.Harness_GetMainLight()
+    side_light = lib.Harness_GetSideLight()
+    assert main_light == lib.LIGHT_STATE_RED, f"Main Light: Expected Red, but got {REVERSE_LIGHT_MAP.get(main_light, 'Unknown')}"
+    assert side_light == lib.LIGHT_STATE_RED, f"Side Light: Expected Red, but got {REVERSE_LIGHT_MAP.get(side_light, 'Unknown')}"
 
 @then('the pedestrian signal should be {signal}')
 def step_impl(context, signal):
     expected = PED_MAP[signal]
     actual = lib.Harness_GetPedestrianSignal()
-    assert actual == expected, f"Ped Signal: Expected {signal}, but got {actual}"
+    assert actual == expected, f"Ped Signal: Expected {signal}, but got {REVERSE_PED_MAP.get(actual, 'Unknown')}"
