@@ -19,8 +19,8 @@ typedef enum {
 
 // --- Function Prototypes for Hardware Control ---
 
-void Hal_SetNorthSouthLight(LightState_t state);
-void Hal_SetEastWestLight(LightState_t state);
+void Hal_SetMainLight(LightState_t state);
+void Hal_SetSideLight(LightState_t state);
 void Hal_SetPedestrianSignal(PedestrianSignal_t signal);
 
 #endif // HAL_TRAFFIC_LIGHTS_H

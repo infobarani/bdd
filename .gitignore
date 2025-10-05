@@ -18,3 +18,7 @@ ceedling/build/libharness.dll
 # Ignore OS generated files
 .DS_Store
 thumbs.db
+
+# Ignore generated files
+lib/spec.h
+features/traffic_light.feature

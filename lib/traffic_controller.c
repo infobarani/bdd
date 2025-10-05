@@ -18,20 +18,15 @@ static bool pedestrian_request_pending;
 static ControllerState_t next_state_after_clearance;
 
 // State Durations
-#define MAIN_GREEN_DURATION_MS   20000
-#define MAIN_YELLOW_DURATION_MS  4000
-#define SIDE_GREEN_DURATION_MS   10000
-#define SIDE_YELLOW_DURATION_MS  4000
-#define ALL_RED_DURATION_MS      2000
-#define PED_WALK_DURATION_MS     10000
-#define PED_FLASH_DURATION_MS    6000
+#include "spec.h"
+
 
 void TrafficController_Init(void) {
     currentState = STATE_MAIN_GREEN;
     timer_ms = 0;
     pedestrian_request_pending = false;
-    Hal_SetNorthSouthLight(LIGHT_STATE_GREEN);
-    Hal_SetEastWestLight(LIGHT_STATE_RED);
+    Hal_SetMainLight(LIGHT_STATE_GREEN);
+    Hal_SetSideLight(LIGHT_STATE_RED);
     Hal_SetPedestrianSignal(PED_SIGNAL_DONT_WALK);
 }
 
@@ -50,7 +45,7 @@ void TrafficController_Tick(uint32_t ms_elapsed) {
             if (timer_ms >= MAIN_GREEN_DURATION_MS) {
                 currentState = STATE_MAIN_YELLOW;
                 timer_ms = 0;
-                Hal_SetNorthSouthLight(LIGHT_STATE_YELLOW);
+                Hal_SetMainLight(LIGHT_STATE_YELLOW);
             }
             break;
 
@@ -58,7 +53,7 @@ void TrafficController_Tick(uint32_t ms_elapsed) {
             if (timer_ms >= MAIN_YELLOW_DURATION_MS) {
                 currentState = STATE_ALL_RED_CLEARANCE;
                 timer_ms = 0;
-                Hal_SetNorthSouthLight(LIGHT_STATE_RED);
+                Hal_SetMainLight(LIGHT_STATE_RED);
                 
                 // Decide what to do after the red clearance
                 if (pedestrian_request_pending) {
@@ -75,12 +70,12 @@ void TrafficController_Tick(uint32_t ms_elapsed) {
                 timer_ms = 0;
                 // Activate the next state's lights
                 if (currentState == STATE_SIDE_GREEN) {
-                    Hal_SetEastWestLight(LIGHT_STATE_GREEN);
+                    Hal_SetSideLight(LIGHT_STATE_GREEN);
                 } else if (currentState == STATE_PEDESTRIAN_WALK) {
                     Hal_SetPedestrianSignal(PED_SIGNAL_WALK);
                     pedestrian_request_pending = false; // Consume the request
                 } else if (currentState == STATE_MAIN_GREEN) {
-                    Hal_SetNorthSouthLight(LIGHT_STATE_GREEN);
+                    Hal_SetMainLight(LIGHT_STATE_GREEN);
                 }
             }
             break;
@@ -89,7 +84,7 @@ void TrafficController_Tick(uint32_t ms_elapsed) {
             if (timer_ms >= SIDE_GREEN_DURATION_MS) {
                 currentState = STATE_SIDE_YELLOW;
                 timer_ms = 0;
-                Hal_SetEastWestLight(LIGHT_STATE_YELLOW);
+                Hal_SetSideLight(LIGHT_STATE_YELLOW);
             }
             break;
         
@@ -97,7 +92,7 @@ void TrafficController_Tick(uint32_t ms_elapsed) {
             if (timer_ms >= SIDE_YELLOW_DURATION_MS) {
                 currentState = STATE_ALL_RED_CLEARANCE;
                 timer_ms = 0;
-                Hal_SetEastWestLight(LIGHT_STATE_RED);
+                Hal_SetSideLight(LIGHT_STATE_RED);
                 next_state_after_clearance = STATE_MAIN_GREEN; // Next is always main green
             }
             break;

@@ -20,7 +20,7 @@ OBJECTS = \
     ceedling/build/test/out/test_harness/test_harness_runner.o
 
 # Phony targets
-.PHONY: all clean shared_lib
+.PHONY: all clean shared_lib generate
 
 all: shared_lib
 
@@ -29,12 +29,17 @@ $(TARGET_LIB): $(OBJECTS)
 	$(CC) -shared -o $@ $(OBJECTS)
 
 # This target first runs ceedling to generate the .o files, then calls the build rule.
-shared_lib:
+shared_lib: generate
 	@echo "--- 1. Running Ceedling to generate object files... ---"
 	cd ceedling && ceedling test:all > /dev/null 2>&1 || ceedling test:all
 	@echo "--- 2. Linking object files into a shared library... ---"
 	$(MAKE) $(TARGET_LIB)
 	@echo "--- Done. Shared library created at $(TARGET_LIB) ---"
+
+generate:
+	@echo "--- 0. Generating spec.h and traffic_light.feature from spec.csv... ---"
+	python3 generate_spec_h.py
+	python3 generate_feature.py
 
 clean:
 	cd ceedling && ceedling clobber

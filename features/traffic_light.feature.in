@@ -1,0 +1,139 @@
+Feature: Traffic Light Controller
+
+  The controller must manage a two-way intersection with a pedestrian crossing,
+  ensuring safe and predictable light sequences.
+
+  Scenario: Normal traffic cycle without interruption
+    Given the traffic controller is initialized
+    Then the main light should be Green
+    And the side light should be Red
+
+    When {MAIN_GREEN_DURATION_SECONDS} seconds pass
+    Then the main light should be Yellow
+
+    When {MAIN_YELLOW_DURATION_SECONDS} seconds pass
+    Then the main light should be Red
+
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    Then the side light should be Green
+
+    When {SIDE_GREEN_DURATION_SECONDS} seconds pass
+    Then the side light should be Yellow
+
+    When {SIDE_YELLOW_DURATION_SECONDS} seconds pass
+    Then the side light should be Red
+
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    Then the main light should be Green
+
+
+  Scenario: Pedestrian button is pressed during Main Green
+    Given the traffic controller is initialized
+    When the pedestrian button is pressed
+    And {MAIN_GREEN_DURATION_SECONDS - 1} seconds pass
+    # Still main green, almost time to change
+    Then the main light should be Green
+
+    When 1 second passes
+    # Total {MAIN_GREEN_DURATION_SECONDS}s passed, now it should be yellow
+    Then the main light should be Yellow
+
+    When {MAIN_YELLOW_DURATION_SECONDS} seconds pass
+    # Total {MAIN_GREEN_DURATION_SECONDS + MAIN_YELLOW_DURATION_SECONDS}s passed, now NS is red
+    Then the main light should be Red
+
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    # Total {MAIN_GREEN_DURATION_SECONDS + MAIN_YELLOW_DURATION_SECONDS + ALL_RED_DURATION_SECONDS}s passed, after clearance, the pedestrian sequence should start
+    Then all vehicle lights should be Red
+    And the pedestrian signal should be Walk
+
+    When {PED_WALK_DURATION_SECONDS} seconds pass
+    # Total {MAIN_GREEN_DURATION_SECONDS + MAIN_YELLOW_DURATION_SECONDS + ALL_RED_DURATION_SECONDS + PED_WALK_DURATION_SECONDS}s passed
+    Then the pedestrian signal should be Flashing Don't Walk
+
+    When {PED_FLASH_DURATION_SECONDS} seconds pass
+    # Total {MAIN_GREEN_DURATION_SECONDS + MAIN_YELLOW_DURATION_SECONDS + ALL_RED_DURATION_SECONDS + PED_WALK_DURATION_SECONDS + PED_FLASH_DURATION_SECONDS}s passed, ped sequence ends, back to clearance
+    Then the pedestrian signal should be Don't Walk
+    And all vehicle lights should be Red
+
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    # Total {MAIN_GREEN_DURATION_SECONDS + MAIN_YELLOW_DURATION_SECONDS + ALL_RED_DURATION_SECONDS + PED_WALK_DURATION_SECONDS + PED_FLASH_DURATION_SECONDS + ALL_RED_DURATION_SECONDS}s passed, clearance is over, side street gets green
+    Then the side light should be Green
+
+  Scenario: Pedestrian button is pressed during Side Road Green
+    Given the traffic controller is initialized
+    # Go to side road green
+    When {MAIN_GREEN_DURATION_SECONDS + MAIN_YELLOW_DURATION_SECONDS + ALL_RED_DURATION_SECONDS} seconds pass
+    Then the side light should be Green
+
+    When the pedestrian button is pressed
+    And {SIDE_GREEN_DURATION_SECONDS - 1} seconds pass
+    # Still side green, almost time to change
+    Then the side light should be Green
+
+    When 1 second passes
+    # Total {SIDE_GREEN_DURATION_SECONDS}s passed, now it should be yellow
+    Then the side light should be Yellow
+
+    When {SIDE_YELLOW_DURATION_SECONDS} seconds pass
+    # Total {SIDE_GREEN_DURATION_SECONDS + SIDE_YELLOW_DURATION_SECONDS}s passed, now EW is red
+    Then the side light should be Red
+
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    # Total {SIDE_GREEN_DURATION_SECONDS + SIDE_YELLOW_DURATION_SECONDS + ALL_RED_DURATION_SECONDS}s passed, after clearance, the main road should be green
+    Then the main light should be Green
+    
+    When {MAIN_GREEN_DURATION_SECONDS} seconds pass
+    Then the main light should be Yellow
+
+    When {MAIN_YELLOW_DURATION_SECONDS} seconds pass
+    Then the main light should be Red
+
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    # After clearance, the pedestrian sequence should start
+    Then all vehicle lights should be Red
+    And the pedestrian signal should be Walk
+
+  Scenario: Pedestrian button is pressed during Main Road Yellow
+    Given the traffic controller is initialized
+    # Go to main road yellow
+    When {MAIN_GREEN_DURATION_SECONDS} seconds pass
+    Then the main light should be Yellow
+
+    When the pedestrian button is pressed
+    And {MAIN_YELLOW_DURATION_SECONDS - 1} seconds pass
+    # Still main yellow, almost time to change
+    Then the main light should be Yellow
+
+    When 1 second passes
+    # Total {MAIN_YELLOW_DURATION_SECONDS}s passed, now it should be red
+    Then the main light should be Red
+
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    # After clearance, the pedestrian sequence should start
+    Then all vehicle lights should be Red
+    And the pedestrian signal should be Walk
+
+  Scenario: Multiple pedestrian button presses
+    Given the traffic controller is initialized
+    When the pedestrian button is pressed
+    And 1 second passes
+    When the pedestrian button is pressed
+    And 1 second passes
+    When the pedestrian button is pressed
+    And {MAIN_GREEN_DURATION_SECONDS - 3} seconds pass
+    # Still main green, almost time to change
+    Then the main light should be Green
+
+    When 1 second passes
+    # Total {MAIN_GREEN_DURATION_SECONDS}s passed, now it should be yellow
+    Then the main light should be Yellow
+
+    When {MAIN_YELLOW_DURATION_SECONDS} seconds pass
+    # Total {MAIN_GREEN_DURATION_SECONDS + MAIN_YELLOW_DURATION_SECONDS}s passed, now NS is red
+    Then the main light should be Red
+
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    # Total {MAIN_GREEN_DURATION_SECONDS + MAIN_YELLOW_DURATION_SECONDS + ALL_RED_DURATION_SECONDS}s passed, after clearance, the pedestrian sequence should start
+    Then all vehicle lights should be Red
+    And the pedestrian signal should be Walk

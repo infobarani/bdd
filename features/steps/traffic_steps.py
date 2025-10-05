@@ -1,21 +1,29 @@
 from behave import given, when, then
 from cffi import FFI
+import os
+import re
 
 # --- CFFI Bridge Setup ---
 ffi = FFI()
-ffi.cdef("""
-    // C Enums
-    typedef enum { LIGHT_STATE_RED, LIGHT_STATE_YELLOW, LIGHT_STATE_GREEN, LIGHT_STATE_OFF } LightState_t;
-    typedef enum { PED_SIGNAL_DONT_WALK, PED_SIGNAL_WALK, PED_SIGNAL_FLASHING_DONT_WALK } PedestrianSignal_t;
 
-    // Harness Function Signatures
-    void Harness_Init(void);
-    void Harness_Tick(uint32_t ms);
-    void Harness_PressButton(void);
-    LightState_t Harness_GetNorthSouthLight(void);
-    LightState_t Harness_GetEastWestLight(void);
-    PedestrianSignal_t Harness_GetPedestrianSignal(void);
-""")
+# Read the C definitions from the header files
+harness_header_path = os.path.join(os.path.dirname(__file__), '..', '..', 'ceedling', 'test', 'test_harness.h')
+hal_header_path = os.path.join(os.path.dirname(__file__), '..', '..', 'hal', 'hal_traffic_lights.h')
+
+with open(hal_header_path) as f:
+    hal_content = f.read()
+
+with open(harness_header_path) as f:
+    harness_content = f.read()
+
+# Extract enum definitions from hal_content
+enums = "".join(re.findall(r"typedef enum \{.*?\} \w+_t;", hal_content, re.DOTALL))
+
+# Remove the include from harness_content
+harness_content = re.sub(r'#include ".*"', '', harness_content)
+
+ffi.cdef(enums)
+ffi.cdef(harness_content)
 
 # Load the shared library we built with our Makefile
 # Make sure the path is correct from where you run 'behave'
@@ -55,19 +63,19 @@ def step_impl(context):
 @then('the main light should be {color}')
 def step_impl(context, color):
     expected = LIGHT_MAP[color]
-    actual = lib.Harness_GetNorthSouthLight()
+    actual = lib.Harness_GetMainLight()
     assert actual == expected, f"Main Light: Expected {color}, but got {actual}"
 
 @then('the side light should be {color}')
 def step_impl(context, color):
     expected = LIGHT_MAP[color]
-    actual = lib.Harness_GetEastWestLight()
+    actual = lib.Harness_GetSideLight()
     assert actual == expected, f"Side Light: Expected {color}, but got {actual}"
 
 @then('all vehicle lights should be Red')
 def step_impl(context):
-    assert lib.Harness_GetNorthSouthLight() == lib.LIGHT_STATE_RED
-    assert lib.Harness_GetEastWestLight() == lib.LIGHT_STATE_RED
+    assert lib.Harness_GetMainLight() == lib.LIGHT_STATE_RED
+    assert lib.Harness_GetSideLight() == lib.LIGHT_STATE_RED
 
 @then('the pedestrian signal should be {signal}')
 def step_impl(context, signal):
