@@ -20,7 +20,7 @@ OBJECTS = \
     ceedling/build/test/out/test_harness/test_harness_runner.o
 
 # Phony targets
-.PHONY: all clean shared_lib generate
+.PHONY: all clean shared_lib generate clean_features
 
 all: shared_lib
 
@@ -41,6 +41,10 @@ generate:
 	cd utils && python3 generate_spec_h.py
 	cd utils && python3 generate_feature.py
 
-clean:
+clean_features:
+	@echo "--- Cleaning generated feature files... ---"
+	rm -f features/*.feature
+
+clean: clean_features
 	cd ceedling && ceedling clobber
 	rm -f $(TARGET_LIB)

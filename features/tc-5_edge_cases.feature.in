@@ -1,0 +1,34 @@
+Feature: Edge Cases and Boundary Conditions
+
+  As a developer, I want to ensure the system handles edge cases and boundary conditions gracefully.
+
+  Scenario: TC-5.1: Rapid State Transitions
+    Given the traffic controller is initialized
+    # This is the same as TC-1.1
+    When {MAIN_GREEN_DURATION_SECONDS} seconds pass
+    Then the main light should be Yellow
+    When {MAIN_YELLOW_DURATION_SECONDS} seconds pass
+    Then the main light should be Red
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    Then the side light should be Green
+    When {SIDE_GREEN_DURATION_SECONDS} seconds pass
+    Then the side light should be Yellow
+    When {SIDE_YELLOW_DURATION_SECONDS} seconds pass
+    Then the side light should be Red
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    Then the main light should be Green
+
+  Scenario: TC-5.2: Pedestrian Button at State Boundaries
+    Given the traffic controller is initialized
+    When {MAIN_GREEN_DURATION_SECONDS} seconds pass
+    When the pedestrian button is pressed
+    Then the main light should be Yellow
+    When {MAIN_YELLOW_DURATION_SECONDS} seconds pass
+    Then all vehicle lights should be Red
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    Then the pedestrian signal should be Walk
+
+  Scenario: TC-5.3: Power Cycle During Operation
+    # This is not possible to test with the current setup.
+    # It would require power control of the device.
+    Given the traffic controller is initialized

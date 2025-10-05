@@ -1,0 +1,32 @@
+Feature: Pedestrian Safety
+
+  As a pedestrian, I expect the system to protect me from vehicular traffic.
+
+  Scenario: TC-4.1: Vehicular Traffic During Pedestrian Crossing
+    Given the traffic controller is initialized
+    When the pedestrian button is pressed
+    When {MAIN_GREEN_DURATION_SECONDS + MAIN_YELLOW_DURATION_SECONDS + ALL_RED_DURATION_SECONDS} seconds pass
+    Then all vehicle lights should be Red
+    And the pedestrian signal should be Walk
+    When {PED_WALK_DURATION_SECONDS} seconds pass
+    Then all vehicle lights should be Red
+    And the pedestrian signal should be Flashing Don't Walk
+    When {PED_FLASH_DURATION_SECONDS} seconds pass
+    Then all vehicle lights should be Red
+    And the pedestrian signal should be Don't Walk
+
+  Scenario: TC-4.2: Pedestrian Signal State During Normal Traffic
+    Given the traffic controller is initialized
+    Then the pedestrian signal should be Don't Walk
+    When {MAIN_GREEN_DURATION_SECONDS} seconds pass
+    Then the pedestrian signal should be Don't Walk
+    When {MAIN_YELLOW_DURATION_SECONDS} seconds pass
+    Then the pedestrian signal should be Don't Walk
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    Then the pedestrian signal should be Don't Walk
+    When {SIDE_GREEN_DURATION_SECONDS} seconds pass
+    Then the pedestrian signal should be Don't Walk
+    When {SIDE_YELLOW_DURATION_SECONDS} seconds pass
+    Then the pedestrian signal should be Don't Walk
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    Then the pedestrian signal should be Don't Walk

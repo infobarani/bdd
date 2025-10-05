@@ -1,0 +1,45 @@
+Feature: Normal Traffic Flow Cycle
+
+  As a driver, I expect the traffic light system to cycle through its states correctly and predictably.
+
+  Scenario: TC-1.1: Complete Normal Cycle Without Pedestrian Request
+    Given the traffic controller is initialized
+    Then the main light should be Green
+    And the side light should be Red
+    And the pedestrian signal should be Don't Walk
+
+    When {MAIN_GREEN_DURATION_SECONDS} seconds pass
+    Then the main light should be Yellow
+    And the side light should be Red
+    And the pedestrian signal should be Don't Walk
+
+    When {MAIN_YELLOW_DURATION_SECONDS} seconds pass
+    Then the main light should be Red
+    And the side light should be Red
+    And the pedestrian signal should be Don't Walk
+
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    Then the main light should be Red
+    And the side light should be Green
+    And the pedestrian signal should be Don't Walk
+
+    When {SIDE_GREEN_DURATION_SECONDS} seconds pass
+    Then the main light should be Red
+    And the side light should be Yellow
+    And the pedestrian signal should be Don't Walk
+
+    When {SIDE_YELLOW_DURATION_SECONDS} seconds pass
+    Then the main light should be Red
+    And the side light should be Red
+    And the pedestrian signal should be Don't Walk
+
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    Then the main light should be Green
+    And the side light should be Red
+    And the pedestrian signal should be Don't Walk
+
+  Scenario: TC-1.2: Default State Verification
+    Given the traffic controller is initialized
+    Then the main light should be Green
+    And the side light should be Red
+    And the pedestrian signal should be Don't Walk

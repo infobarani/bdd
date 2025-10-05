@@ -1,0 +1,8 @@
+Feature: Timing Accuracy
+
+  As a developer, I want to ensure the system maintains timing accuracy.
+
+  Scenario: TC-6.1: Long-Term Timing Drift
+    # This is not practical to test in a BDD scenario.
+    # It would require running the simulation for an hour.
+    Given the traffic controller is initialized

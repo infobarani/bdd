@@ -1,0 +1,78 @@
+Feature: Pedestrian Crossing Functionality
+
+  As a pedestrian, I expect to be able to safely cross the intersection.
+
+  Scenario: TC-3.1: Pedestrian Button Press During Main Road Green
+    Given the traffic controller is initialized
+    When the pedestrian button is pressed
+    And {MAIN_GREEN_DURATION_SECONDS - 1} seconds pass
+    Then the main light should be Green
+    When 1 second passes
+    Then the main light should be Yellow
+    When {MAIN_YELLOW_DURATION_SECONDS} seconds pass
+    Then all vehicle lights should be Red
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    Then the pedestrian signal should be Walk
+    When {PED_WALK_DURATION_SECONDS} seconds pass
+    Then the pedestrian signal should be Flashing Don't Walk
+    When {PED_FLASH_DURATION_SECONDS} seconds pass
+    Then the pedestrian signal should be Don't Walk
+    And all vehicle lights should be Red
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    Then the side light should be Green
+
+  Scenario: TC-3.2: Pedestrian Button Press During Main Road Yellow
+    Given the traffic controller is initialized
+    When {MAIN_GREEN_DURATION_SECONDS} seconds pass
+    Then the main light should be Yellow
+    When the pedestrian button is pressed
+    When {MAIN_YELLOW_DURATION_SECONDS} seconds pass
+    Then all vehicle lights should be Red
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    Then the pedestrian signal should be Walk
+    When {PED_WALK_DURATION_SECONDS} seconds pass
+    Then the pedestrian signal should be Flashing Don't Walk
+    When {PED_FLASH_DURATION_SECONDS} seconds pass
+    Then the pedestrian signal should be Don't Walk
+    And all vehicle lights should be Red
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    Then the side light should be Green
+
+  Scenario: TC-3.3: Pedestrian Button Press During Side Road Green
+    Given the traffic controller is initialized
+    When {MAIN_GREEN_DURATION_SECONDS + MAIN_YELLOW_DURATION_SECONDS + ALL_RED_DURATION_SECONDS} seconds pass
+    Then the side light should be Green
+    When the pedestrian button is pressed
+    When {SIDE_GREEN_DURATION_SECONDS} seconds pass
+    Then the side light should be Yellow
+    When {SIDE_YELLOW_DURATION_SECONDS} seconds pass
+    Then all vehicle lights should be Red
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    Then the main light should be Green
+    When {MAIN_GREEN_DURATION_SECONDS} seconds pass
+    Then the main light should be Yellow
+    When {MAIN_YELLOW_DURATION_SECONDS} seconds pass
+    Then all vehicle lights should be Red
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    Then the pedestrian signal should be Walk
+
+  Scenario: TC-3.4: Pedestrian Walk Signal Timing
+    Given the traffic controller is initialized
+    When the pedestrian button is pressed
+    When {MAIN_GREEN_DURATION_SECONDS + MAIN_YELLOW_DURATION_SECONDS + ALL_RED_DURATION_SECONDS} seconds pass
+    Then the pedestrian signal should be Walk
+    When {PED_WALK_DURATION_SECONDS} seconds pass
+    Then the pedestrian signal should be Flashing Don't Walk
+    When {PED_FLASH_DURATION_SECONDS} seconds pass
+    Then the pedestrian signal should be Don't Walk
+    And all vehicle lights should be Red
+
+  Scenario: TC-3.5: Multiple Pedestrian Button Presses
+    Given the traffic controller is initialized
+    When the pedestrian button is pressed
+    When 1 second passes
+    When the pedestrian button is pressed
+    When {MAIN_GREEN_DURATION_SECONDS - 2} seconds pass
+    Then the main light should be Green
+    When 1 second passes
+    Then the main light should be Yellow

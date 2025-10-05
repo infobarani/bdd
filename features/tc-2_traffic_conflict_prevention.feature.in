@@ -1,0 +1,40 @@
+Feature: Traffic Conflict Prevention
+
+  As a driver, I expect the system to prevent conflicting traffic from proceeding simultaneously.
+
+  Scenario: TC-2.1: No Simultaneous Green Lights
+    Given the traffic controller is initialized
+    # This scenario is difficult to test with the current step definitions.
+    # It would require continuous monitoring of the lights.
+    # For now, we can check the states at each transition.
+    When {MAIN_GREEN_DURATION_SECONDS} seconds pass
+    Then the main light should be Yellow
+    And the side light should be Red
+    When {MAIN_YELLOW_DURATION_SECONDS} seconds pass
+    Then the main light should be Red
+    And the side light should be Red
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    Then the main light should be Red
+    And the side light should be Green
+    When {SIDE_GREEN_DURATION_SECONDS} seconds pass
+    Then the main light should be Red
+    And the side light should be Yellow
+    When {SIDE_YELLOW_DURATION_SECONDS} seconds pass
+    Then the main light should be Red
+    And the side light should be Red
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    Then the main light should be Green
+    And the side light should be Red
+
+  Scenario: TC-2.2: All Red Clearance Verification
+    Given the traffic controller is initialized
+    When {MAIN_GREEN_DURATION_SECONDS} seconds pass
+    When {MAIN_YELLOW_DURATION_SECONDS} seconds pass
+    Then all vehicle lights should be Red
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    Then the side light should be Green
+    When {SIDE_GREEN_DURATION_SECONDS} seconds pass
+    When {SIDE_YELLOW_DURATION_SECONDS} seconds pass
+    Then all vehicle lights should be Red
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    Then the main light should be Green

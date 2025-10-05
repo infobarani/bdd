@@ -1,0 +1,26 @@
+Feature: System Integration
+
+  As a developer, I want to ensure all components of the system are integrated correctly.
+
+  Scenario: TC-7.1: All Lights Functional Test
+    Given the traffic controller is initialized
+    Then the main light should be Green
+    When {MAIN_GREEN_DURATION_SECONDS} seconds pass
+    Then the main light should be Yellow
+    When {MAIN_YELLOW_DURATION_SECONDS} seconds pass
+    Then the main light should be Red
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    Then the side light should be Green
+    When {SIDE_GREEN_DURATION_SECONDS} seconds pass
+    Then the side light should be Yellow
+    When {SIDE_YELLOW_DURATION_SECONDS} seconds pass
+    Then the side light should be Red
+    When {ALL_RED_DURATION_SECONDS} seconds pass
+    Then the main light should be Green
+    When the pedestrian button is pressed
+    When {MAIN_GREEN_DURATION_SECONDS + MAIN_YELLOW_DURATION_SECONDS + ALL_RED_DURATION_SECONDS} seconds pass
+    Then the pedestrian signal should be Walk
+    When {PED_WALK_DURATION_SECONDS} seconds pass
+    Then the pedestrian signal should be Flashing Don't Walk
+    When {PED_FLASH_DURATION_SECONDS} seconds pass
+    Then the pedestrian signal should be Don't Walk

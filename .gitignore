@@ -20,4 +20,4 @@ ceedling/build/libharness.dll
 thumbs.db
 
 # Ignore generated files
-features/traffic_light.feature
+*.feature
