@@ -52,17 +52,17 @@ def step_impl(context, seconds):
 def step_impl(context):
     lib.Harness_PressButton()
 
-@then('the North/South light should be {color}')
+@then('the main light should be {color}')
 def step_impl(context, color):
     expected = LIGHT_MAP[color]
     actual = lib.Harness_GetNorthSouthLight()
-    assert actual == expected, f"N/S Light: Expected {color}, but got {actual}"
+    assert actual == expected, f"Main Light: Expected {color}, but got {actual}"
 
-@then('the East/West light should be {color}')
+@then('the side light should be {color}')
 def step_impl(context, color):
     expected = LIGHT_MAP[color]
     actual = lib.Harness_GetEastWestLight()
-    assert actual == expected, f"E/W Light: Expected {color}, but got {actual}"
+    assert actual == expected, f"Side Light: Expected {color}, but got {actual}"
 
 @then('all vehicle lights should be Red')
 def step_impl(context):

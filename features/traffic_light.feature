@@ -5,26 +5,26 @@ Feature: Traffic Light Controller
 
   Scenario: Normal traffic cycle without interruption
     Given the traffic controller is initialized
-    Then the North/South light should be Green
-    And the East/West light should be Red
+    Then the main light should be Green
+    And the side light should be Red
 
     When 20 seconds pass
-    Then the North/South light should be Yellow
+    Then the main light should be Yellow
 
     When 4 seconds pass
-    Then the North/South light should be Red
+    Then the main light should be Red
 
     When 2 seconds pass
-    Then the East/West light should be Green
+    Then the side light should be Green
 
     When 10 seconds pass
-    Then the East/West light should be Yellow
+    Then the side light should be Yellow
 
     When 4 seconds pass
-    Then the East/West light should be Red
+    Then the side light should be Red
 
     When 2 seconds pass
-    Then the North/South light should be Green
+    Then the main light should be Green
 
 
   Scenario: Pedestrian button is pressed during Main Green
@@ -32,15 +32,15 @@ Feature: Traffic Light Controller
     When the pedestrian button is pressed
     And 19 seconds pass
     # Still main green, almost time to change
-    Then the North/South light should be Green
+    Then the main light should be Green
 
     When 1 second passes
     # Total 20s passed, now it should be yellow
-    Then the North/South light should be Yellow
+    Then the main light should be Yellow
 
     When 4 seconds pass
     # Total 24s passed, now NS is red
-    Then the North/South light should be Red
+    Then the main light should be Red
 
     When 2 seconds pass
     # Total 26s passed, after clearance, the pedestrian sequence should start
@@ -58,4 +58,4 @@ Feature: Traffic Light Controller
 
     When 2 seconds pass
     # Total 44s passed, clearance is over, side street gets green
-    Then the East/West light should be Green
+    Then the side light should be Green
