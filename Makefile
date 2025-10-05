@@ -38,8 +38,8 @@ shared_lib: generate
 
 generate:
 	@echo "--- 0. Generating spec.h and traffic_light.feature from spec.csv... ---"
-	python3 generate_spec_h.py
-	python3 generate_feature.py
+	cd utils && python3 generate_spec_h.py
+	cd utils && python3 generate_feature.py
 
 clean:
 	cd ceedling && ceedling clobber

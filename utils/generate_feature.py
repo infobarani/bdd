@@ -1,5 +1,6 @@
 import csv
 import re
+import os
 
 durations = {}
 with open('spec.csv', 'r') as f:
@@ -9,7 +10,7 @@ with open('spec.csv', 'r') as f:
         state, duration_ms = row
         durations[f"{state}_DURATION_SECONDS"] = str(int(duration_ms) // 1000)
 
-with open('features/traffic_light.feature.in', 'r') as f_in:
+with open(os.path.join('..', 'features', 'traffic_light.feature.in'), 'r') as f_in:
     content = f_in.read()
 
 def replace_placeholders(match):
@@ -21,5 +22,5 @@ def replace_placeholders(match):
 # The regex should find anything between { and }
 content = re.sub(r'\{([^}]+)\}', replace_placeholders, content)
 
-with open('features/traffic_light.feature', 'w') as f_out:
+with open(os.path.join('..', 'features', 'traffic_light.feature'), 'w') as f_out:
     f_out.write(content)
