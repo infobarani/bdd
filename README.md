@@ -5,7 +5,7 @@ This project demonstrates Behavior-Driven Development (BDD) for an embedded C tr
 ## Project Structure
 
 ```
-traffic_light_bdd/
+bdd/
 ├── ceedling/                # Ceedling project for our C code
 │   ├── project.yml          # Ceedling configuration
 │   ├── src/                 # Our C source code
@@ -40,27 +40,14 @@ traffic_light_bdd/
     sudo apt-get update
     sudo apt-get install python3-pip python3.12-venv
     ```
-
-### Project Setup
-
-1.  **Navigate to the project root:**
-    ```bash
-    cd traffic_light_bdd
-    ```
-
-2.  **Create and activate a Python virtual environment:**
-    ```bash
-    python3 -m venv venv
-    source venv/bin/activate
-    ```
-
-3.  **Install Python dependencies:**
+*  **Install Python dependencies:**
     ```bash
     pip install behave cffi
     ```
 
-4.  **Build the shared library:**
+## Build the shared library
     This command will first run Ceedling to compile the C code and generate the necessary object files, then it will link them into a shared library for Python.
+    
     ```bash
     make shared_lib
     ```

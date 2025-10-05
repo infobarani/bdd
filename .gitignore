@@ -2,9 +2,6 @@
 ceedling/build/
 ceedling/.ceedling/
 
-# Ignore Python virtual environment
-venv/
-
 # Ignore shared library
 ceedling/build/libharness.so
 ceedling/build/libharness.dll
