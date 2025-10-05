@@ -39,7 +39,7 @@ Feature: Traffic Light Controller
     Then the main light should be Yellow
 
     When {MAIN_YELLOW_DURATION_SECONDS} seconds pass
-    # Total {MAIN_GREEN_DURATION_SECONDS + MAIN_YELLOW_DURATION_SECONDS}s passed, now NS is red
+    # Total {MAIN_GREEN_DURATION_SECONDS + MAIN_YELLOW_DURATION_SECONDS}s passed, now main is red
     Then the main light should be Red
 
     When {ALL_RED_DURATION_SECONDS} seconds pass
@@ -76,7 +76,7 @@ Feature: Traffic Light Controller
     Then the side light should be Yellow
 
     When {SIDE_YELLOW_DURATION_SECONDS} seconds pass
-    # Total {SIDE_GREEN_DURATION_SECONDS + SIDE_YELLOW_DURATION_SECONDS}s passed, now EW is red
+    # Total {SIDE_GREEN_DURATION_SECONDS + SIDE_YELLOW_DURATION_SECONDS}s passed, now side is red
     Then the side light should be Red
 
     When {ALL_RED_DURATION_SECONDS} seconds pass
@@ -130,7 +130,7 @@ Feature: Traffic Light Controller
     Then the main light should be Yellow
 
     When {MAIN_YELLOW_DURATION_SECONDS} seconds pass
-    # Total {MAIN_GREEN_DURATION_SECONDS + MAIN_YELLOW_DURATION_SECONDS}s passed, now NS is red
+    # Total {MAIN_GREEN_DURATION_SECONDS + MAIN_YELLOW_DURATION_SECONDS}s passed, now main is red
     Then the main light should be Red
 
     When {ALL_RED_DURATION_SECONDS} seconds pass

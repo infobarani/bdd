@@ -39,7 +39,7 @@ Feature: Traffic Light Controller
     Then the main light should be Yellow
 
     When 4 seconds pass
-    # Total 24s passed, now NS is red
+    # Total 24s passed, now main is red
     Then the main light should be Red
 
     When 2 seconds pass
@@ -76,7 +76,7 @@ Feature: Traffic Light Controller
     Then the side light should be Yellow
 
     When 4 seconds pass
-    # Total 14s passed, now EW is red
+    # Total 14s passed, now side is red
     Then the side light should be Red
 
     When 2 seconds pass
@@ -130,7 +130,7 @@ Feature: Traffic Light Controller
     Then the main light should be Yellow
 
     When 4 seconds pass
-    # Total 24s passed, now NS is red
+    # Total 24s passed, now main is red
     Then the main light should be Red
 
     When 2 seconds pass
