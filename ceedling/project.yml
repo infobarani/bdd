@@ -1,0 +1,22 @@
+:project:
+  :use_mocks: TRUE
+  :build_root: build
+  :test_file_prefix: test_
+:paths:
+  :test:
+    - +:test/**
+  :source:
+    - src/**
+  :include:
+    - src/**
+:cmock:
+  :mock_prefix: mock_
+  :plugins:
+    - :callback
+  :mock_includes:
+    - hal_traffic_lights.h
+:flags:
+  :test:
+    :compile:
+      :*: 
+        - -fPIC

@@ -1,0 +1,23 @@
+# Ignore Ceedling build artifacts
+ceedling/build/
+ceedling/.ceedling/
+
+# Ignore Python virtual environment
+venv/
+
+# Ignore shared library
+ceedling/build/libharness.so
+ceedling/build/libharness.dll
+
+# Ignore backup files
+*.bak
+
+# Ignore editor/IDE files
+.vscode/
+.idea/
+*.swp
+*~
+
+# Ignore OS generated files
+.DS_Store
+thumbs.db
